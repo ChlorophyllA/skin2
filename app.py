@@ -19,7 +19,7 @@ SKIN_DB = "data_skin.db"       # 皮肤病数据库
 HOSPITAL_PAGE_SIZE = 10
 SKIN_PAGE_SIZE = 1  # 每页显示一条皮肤病信息
 
-app = Flask(__name__, static_folder="static", template_folder="templates")
+app = Flask(__name__)
 app.secret_key = 'haohaoxuexi123'  # 设置安全的密钥
 
 UPLOAD_FOLDER = 'static/uploads'
