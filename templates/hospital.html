@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>皮肤病识别平台 — 医院筛选</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-heartbeat"></i>
+      </div>
+      <div class="logo-text">皮肤病识别平台</div>
+    </div>
+    <nav class="nav-links">
+      <a href="/"><i class="fas fa-arrow-left"></i> 首页</a>
+  </header>
+
+  <div class="container">
+    
+
+    <section class="filters">
+      <h2 class="section-title">医院筛选</h2>
+      <div class="filter-row">
+        <div class="field" style="position:relative;">
+          <label><i class="fas fa-map-marker-alt"></i> 省份</label>
+          <input id="province-input" type="text" placeholder="输入省份名称..." autocomplete="off" />
+          <div id="province-suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="field">
+          <label><i class="fas fa-city"></i> 城市</label>
+          <select id="city-select">
+            <option value="">全部城市</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label><i class="fas fa-star"></i> 医院等级</label>
+          <select id="level-select">
+            <option value="">全部等级</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label><i class="fas fa-stethoscope"></i> 重点科室</label>
+          <input id="dept-input" type="text" placeholder="输入科室名称..." />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="search-btn" class="btn primary">
+          <i class="fas fa-search"></i> 搜索医院
+        </button>
+        <button id="reset-btn" class="btn">
+          <i class="fas fa-redo"></i> 重置选项
+        </button>
+      </div>
+    </section>
+
+    <section class="results">
+      <div id="results-grid" class="grid"></div>
+      <div id="pagination" class="pagination">
+        <button id="prev-page" class="btn">
+          <i class="fas fa-chevron-left"></i> 上一页
+        </button>
+        <span id="page-info"></span>
+        <button id="next-page" class="btn">
+          下一页 <i class="fas fa-chevron-right"></i>
+        </button>
+        <input id="jump-page-input" type="number" min="1" />
+        <button id="jump-page-btn" class="btn">
+          <i class="fas fa-step-forward"></i> 跳转
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

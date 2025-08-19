@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>皮肤病识别平台 - 智能皮肤健康管理</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #6b9ac4;
+      --accent: #97d8c4;
+      --light: #f4f9f8;
+      --dark: #2a3b47;
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #e6f0ff 0%, #f4f9f8 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(151, 216, 196, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(107, 154, 196, 0.1) 0%, transparent 20%);
+      z-index: -1;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* 头部样式 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo-icon {
+      background: var(--primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+    }
+    
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark);
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    
+    .nav-links a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover {
+      background: rgba(107, 154, 196, 0.1);
+      color: var(--primary);
+    }
+    
+    /* 主标题区域 */
+    .hero {
+      text-align: center;
+      padding: 40px 0;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .hero h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    
+    .hero p {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      font-size: 1.2rem;
+      color: #5a6d7c;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 功能卡片区域 */
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    
+    .option-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 25px rgba(42, 59, 71, 0.08);
+      border: 1px solid rgba(107, 154, 196, 0.15);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .option-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .option-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(42, 59, 71, 0.15);
+    }
+    
+    .option-card:hover::before {
+      opacity: 1;
+    }
+    
+    .card-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #e6f0ff 0%, #f0f9ff 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      color: var(--primary);
+      font-size: 32px;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(107, 154, 196, 0.2);
+    }
+    
+    .option-card:hover .card-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .option-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+    
+    .option-card p {
+      color: #6a7b89;
+      flex-grow: 1;
+      margin-bottom: 20px;
+    }
+    
+    .card-link {
+      display: inline-block;
+      background: var(--light);
+      color: var(--primary);
+      padding: 10px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 2px solid rgba(107, 154, 196, 0.3);
+    }
+    
+    .option-card:hover .card-link {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border-color: transparent;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+    }
+    
+    
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      header {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .options {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto 60px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .option-card {
+        padding: 25px 20px;
+      }
+      
+      .card-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+      }
+      
+      .option-card h2 {
+        font-size: 1.6rem;
+      }
+    }
+    
+    /* 动画效果 */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon floating">
+          <i class="fas fa-heartbeat"></i>
+        </div>
+        <div class="logo-text">皮肤健康管家</div>
+      </div>
+      <nav class="nav-links">
+        <a href="#"><i class="fas fa-home"></i> 首页</a>
+      </nav>
+    </header>
+    
+    <section class="hero">
+      <h1>皮肤病识别平台</h1>
+      <p>专业、智能、便捷的皮肤健康管理解决方案，为您提供全方位的皮肤健康服务</p>
+    </section>
+    
+    <div class="options">
+      <a href="/recognition">
+        <div class="option-card">
+          <div class="card-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h2>病变识别</h2>
+          <p>通过AI技术快速识别皮肤病变，提供初步疾病分类诊断</p>
+          <span class="card-link">开始识别</span>
+        </div>
+      </a>
+      
+      <a href="/diagnose">
+        <div class="option-card">
+          <div class="card-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h2>智能问诊</h2>
+          <p>AI医生在线为您提供皮肤病科普和初步诊断建议</p>
+          <span class="card-link">立即咨询</span>
+        </div>
+      </a>
+      
+      <a href="/hospital">
+        <div class="option-card">
+          <div class="card-icon">
+            <i class="fas fa-hospital"></i>
+          </div>
+          <h2>医院信息查询</h2>
+          <p>查找全国专业医院及皮肤科重点科室信息</p>
+          <span class="card-link">查找医院</span>
+        </div>
+      </a>
+      
+      <a href="/derm">
+        <div class="option-card">
+          <div class="card-icon">
+            <i class="fas fa-book-medical"></i>
+          </div>
+          <h2>皮肤病科普</h2>
+          <p>了解常见皮肤病的成因、特征与科学护理方法</p>
+          <span class="card-link">学习知识</span>
+        </div>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <script>
+    // 添加简单的动画效果
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.option-card');
+      
+      // 为每个卡片添加延迟动画
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 200 + index * 150);
+      });
+      
+      // 添加鼠标悬停效果增强
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.querySelector('.card-link').style.transform = 'translateY(-3px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.querySelector('.card-link').style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

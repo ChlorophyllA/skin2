@@ -1,0 +1,450 @@
+:root {
+  --primary: #4a6fa5;
+  --secondary: #6b9ac4;
+  --accent: #97d8c4;
+  --light: #f4f9f8;
+  --dark: #2a3b47;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(107, 154, 196, 0.15);
+  --text-primary: #1e40af;
+  --text-secondary: #475569;
+  --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #e6f0ff 0%, #f4f9f8 100%);
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(151, 216, 196, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(107, 154, 196, 0.1) 0%, transparent 20%);
+  z-index: -1;
+}
+
+/* 顶部导航栏 */
+.topbar {
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  color: white;
+  padding: 18px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-icon {
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 20px;
+  box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* 返回按钮 */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  max-width: 120px;
+  margin: 20px 0;
+}
+
+.back-btn:hover {
+  background: white;
+  transform: translateX(-5px);
+}
+
+/* 主容器 */
+.container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+/* 筛选区域 */
+.filters {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(42, 59, 71, 0.08);
+  margin-bottom: 30px;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: var(--dark);
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.field {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  position: relative;
+}
+
+.field label {
+  font-size: 15px;
+  color: var(--dark);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.field input[type="text"],
+.field select {
+  padding: 12px 16px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: var(--transition);
+  background: white;
+}
+
+.field input[type="text"]:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+.suggestions {
+  position: relative;
+}
+
+.suggestions .list {
+  position: absolute;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 40;
+  border-radius: 10px;
+  margin-top: 6px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.suggestions .list div {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--dark);
+  transition: var(--transition);
+}
+
+.suggestions .list div:hover {
+  background: #e0e7ff;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: var(--transition);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn.primary:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+/* 结果区域 */
+.results {
+  margin-top: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(42, 59, 71, 0.08);
+  transition: var(--transition);
+  border: 1px solid transparent;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  opacity: 0.8;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(42, 59, 71, 0.15);
+  border-color: var(--primary);
+}
+
+.card h3 {
+  margin: 0 0 18px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3 i {
+  color: var(--secondary);
+}
+
+.card .meta {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.45;
+  display: flex;
+}
+
+.card .meta strong {
+  display: inline-block;
+  width: 100px;
+  color: var(--dark);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* 分页控件 */
+.pagination {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+#page-info {
+  font-size: 16px;
+  color: var(--dark);
+  min-width: 180px;
+  text-align: center;
+  font-weight: 500;
+}
+
+#jump-page-input {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 8px 12px;
+  width: 80px;
+  transition: var(--transition);
+  background: white;
+}
+
+#jump-page-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-row {
+    flex-direction: column;
+  }
+  
+  .pagination {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  
+  .topbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .filters {
+    padding: 20px;
+  }
+  
+  .card .meta {
+    flex-direction: column;
+  }
+  
+  .card .meta strong {
+    width: auto;
+    margin-bottom: 5px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 无结果提示 */
+.no-results {
+  text-align: center;
+  padding: 40px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(42, 59, 71, 0.08);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+.no-results i {
+  font-size: 48px;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.no-results h3 {
+  font-size: 22px;
+  color: var(--dark);
+  margin-bottom: 15px;
+}
+
+.no-results p {
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+}

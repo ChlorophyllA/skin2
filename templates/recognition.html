@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>皮肤病识别平台 - 病变识别</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #6b9ac4;
+      --accent: #97d8c4;
+      --light: #f4f9f8;
+      --dark: #2a3b47;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(107, 154, 196, 0.15);
+      --text-primary: #1e40af;
+      --text-secondary: #475569;
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #e6f0ff 0%, #f4f9f8 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(151, 216, 196, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(107, 154, 196, 0.1) 0%, transparent 20%);
+      z-index: -1;
+    }
+    
+    /* 顶部导航栏 */
+    .topbar {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 18px 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo-icon {
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 20px;
+      box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+    }
+    
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    
+    /* 返回按钮 */
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 30px;
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      max-width: 120px;
+      margin: 20px 0;
+    }
+    
+    .back-btn:hover {
+      background: white;
+      transform: translateX(-5px);
+    }
+    
+    /* 主容器 */
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+    
+    /* 识别区域 */
+    .recognition-container {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(42, 59, 71, 0.08);
+      margin-bottom: 30px;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: var(--dark);
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    
+    .upload-area {
+      border: 2px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 40px 20px;
+      text-align: center;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      margin-bottom: 30px;
+      position: relative;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .upload-area.has-image {
+      border: 2px solid var(--accent);
+      background: rgba(235, 245, 255, 0.7);
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(235, 245, 255, 0.7);
+    }
+    
+    .upload-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+      transition: var(--transition);
+    }
+    
+    .upload-area.has-image .upload-icon {
+      transform: scale(0);
+      opacity: 0;
+    }
+    
+    .upload-text {
+      font-size: 18px;
+      color: var(--dark);
+      margin-bottom: 10px;
+      transition: var(--transition);
+    }
+    
+    .upload-area.has-image .upload-text {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    
+    .upload-subtext {
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    
+    .upload-area.has-image .upload-subtext {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    
+    #file-input {
+      display: none;
+    }
+    
+    /* 上传预览 */
+    .preview-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 20px;
+      display: none;
+      border-radius: 14px;
+    }
+    
+    .preview-image.active {
+      display: block;
+    }
+    
+    .change-image-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+    }
+    
+    .change-image-btn:hover {
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: var(--transition);
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn.primary {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .btn.primary:hover {
+      background: #1e40af;
+      border-color: #1e40af;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+    }
+    
+    /* 预览区域 */
+    .preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    
+    .image-preview {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+    
+    .preview-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .preview-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .preview-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .result-container {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .result-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .disease-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .confidence {
+      font-size: 16px;
+      background: #e0f2fe;
+      padding: 5px 12px;
+      border-radius: 20px;
+      color: #0c4a6e;
+      font-weight: 600;
+    }
+    
+    .disease-info {
+      margin-top: 15px;
+    }
+    
+    .disease-info p {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    
+    .info-label {
+      font-weight: 600;
+      color: var(--dark);
+      display: inline-block;
+      width: 80px;
+    }
+    
+    /* 加载状态 */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(37, 99, 235, 0.2);
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .preview-container {
+        flex-direction: column;
+      }
+      
+      .image-preview, .result-container {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .recognition-container {
+        padding: 20px;
+      }
+      
+      .upload-area {
+        padding: 30px 15px;
+        min-height: 180px;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .preview-box {
+        height: 300px;
+      }
+      
+      .change-image-btn {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-heartbeat"></i>
+      </div>
+      <div class="logo-text">皮肤病识别平台</div>
+    </div>
+    <nav class="nav-links">
+      <a href="/"><i class="fas fa-home"></i> 首页</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <section class="recognition-container">
+      <h2 class="section-title">皮肤病病变识别</h2>
+      
+      <div class="upload-area" id="upload-area">
+        <div class="upload-icon">
+          <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <div class="upload-text">点击或拖拽图片到此处上传</div>
+        <div class="upload-subtext">支持 JPG、PNG 格式，最大 5MB</div>
+        <img id="preview-image" class="preview-image" alt="预览图片">
+        <button class="change-image-btn" id="change-image-btn" style="display: none;">
+          <i class="fas fa-sync-alt"></i> 更换图片
+        </button>
+        <input type="file" id="file-input" accept="image/*">
+      </div>
+      
+      <div class="actions">
+        <button id="process-btn" class="btn primary" disabled>
+          <i class="fas fa-search"></i> 开始识别
+        </button>
+        <button id="reset-btn" class="btn">
+          <i class="fas fa-redo"></i> 重置
+        </button>
+      </div>
+      
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>AI正在分析图片，请稍候...</p>
+      </div>
+      
+      <div class="preview-container" id="results-container" style="display:none;">
+        <div class="image-preview">
+          <div class="preview-title">
+            <i class="fas fa-image"></i> 识别结果
+          </div>
+          <div class="preview-box">
+            <img id="result-image" class="preview-img" src="" alt="识别结果">
+          </div>
+        </div>
+        
+        <div class="result-container">
+          <div class="preview-title">
+            <i class="fas fa-diagnoses"></i> 诊断信息
+          </div>
+          
+          <div class="result-card">
+            <div class="disease-name">
+              <span id="disease-name">未识别</span>
+              <span class="confidence" id="confidence">0%</span>
+            </div>
+            <div class="disease-info">
+              <p><span class="info-label">可能性：</span><span id="probability">--</span></p>
+              <p><span class="info-label">描述：</span><span id="disease-desc">--</span></p>
+              <p><span class="info-label">建议：</span><span id="disease-advice">--</span></p>
+            </div>
+          </div>
+          
+          <div class="result-card">
+            <div class="preview-title">
+              <i class="fas fa-info-circle"></i> 健康建议
+            </div>
+            <ul id="health-advice">
+              <li>请保持皮肤清洁干燥</li>
+              <li>避免抓挠患处</li>
+              <li>及时就医进行专业诊断</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/recognition.js"></script>
+</body>
+</html>

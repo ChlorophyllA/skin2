@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>皮肤病科普</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #6b9ac4;
+      --accent: #97d8c4;
+      --light: #f4f9f8;
+      --dark: #2a3b47;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #e6f0ff 0%, #f4f9f8 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(151, 216, 196, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(107, 154, 196, 0.1) 0%, transparent 20%);
+      z-index: -1;
+    }
+
+
+    /* 返回按钮 */
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 30px;
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      max-width: 140px;
+      margin: 20px auto 0;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .back-btn:hover {
+      background: white;
+      transform: translateX(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: wrap-content;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 标题样式 */
+    .page-title {
+      font-size: 2.8rem;
+      text-align: center;
+      margin: 30px 0 40px;
+      position: relative;
+      padding-bottom: 20px;
+      color: var(--dark);
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    /* 疾病卡片 */
+    .disease-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(42, 59, 71, 0.12);
+      max-width: 90%;
+      width: 100%;
+      margin: 20px auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      border: 1px solid rgba(107, 154, 196, 0.15);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      align-content: center;
+    }
+
+    .disease-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      opacity: 0.8;
+    }
+
+    .disease-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(42, 59, 71, 0.2);
+    }
+
+    .image-section {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .info-section {
+      flex: 1.5;
+      min-width: 300px;
+    }
+
+    .disease-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 20px;
+      border: 1px solid rgba(107, 154, 196, 0.2);
+    }
+
+    .disease-name {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .disease-name i {
+      color: var(--secondary);
+      font-size: 2rem;
+    }
+
+    .field {
+      margin-bottom: 25px;
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(230, 240, 255, 0.3);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: row;
+    }
+
+    .field:hover {
+      background: rgba(230, 240, 255, 0.5);
+      transform: translateX(5px);
+    }
+
+    .field-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      color: var(--dark);
+      white-space: nowrap;
+      flex-shrink: 0; 
+    }
+
+    .field-title i {
+      color: var(--primary);
+      width: 30px;
+      text-align: center;
+    }
+
+    .field-content {
+      padding-left: 42px;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    /* 分页控件 */
+    .pagination {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+      flex-wrap: wrap;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      background: #1e40af;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn.secondary {
+      background: var(--accent);
+      box-shadow: 0 4px 12px rgba(151, 216, 196, 0.3);
+    }
+
+    .btn.secondary:hover {
+      background: #5dc7a9;
+      box-shadow: 0 6px 15px rgba(151, 216, 196, 0.4);
+    }
+
+    #page-info {
+      font-size: 1.2rem;
+      color: var(--dark);
+      min-width: 200px;
+      text-align: center;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 12px;
+    }
+
+    /* 无数据提示 */
+    .no-data {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(42, 59, 71, 0.12);
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .no-data i {
+      font-size: 4rem;
+      color: var(--secondary);
+      margin-bottom: 25px;
+    }
+
+    .no-data h3 {
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 15px;
+    }
+
+    .no-data p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .disease-card {
+        flex-direction: column;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .page-title {
+        font-size: 2.2rem;
+        margin: 20px 0 30px;
+      }
+      
+      .pagination {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page-title {
+        font-size: 1.8rem;
+      }
+      
+      .disease-name {
+        font-size: 1.8rem;
+      }
+      
+      .field-title {
+        font-size: 1.1rem;
+      }
+      
+      .field-content {
+        font-size: 1rem;
+        padding-left: 0;
+      }
+      
+      .disease-image {
+        max-height: 300px;
+      }
+      
+      .back-btn {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto 20px;
+      }
+    }
+
+    /* 动画效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .disease-card, .pagination {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+  </style>
+</head>
+<body>
+  
+
+  <div class="container">
+    <a href="/" class="back-btn">
+      <i class="fas fa-arrow-left"></i> 返回首页
+    </a>
+
+    <h1 class="page-title">皮肤病科普知识库</h1>
+
+    <div class="disease-card" id="disease-card">
+      <div class="image-section">
+        <img id="disease-image" class="disease-image" src="" alt="皮肤病图片">
+        <h2 class="disease-name">
+          <i class="fas fa-disease"></i>
+          <span id="disease-name">皮肤病名称</span>
+        </h2>
+      </div>
+      
+      <div class="info-section">
+        <div class="field">
+          <div class="field-title">
+            <i class="fas fa-vial"></i>
+            <strong>成因&#12288;&#12288;</strong>
+          </div>
+          <div class="field-content" id="disease-cause">加载中...</div>
+        </div>
+        
+        <div class="field">
+          <div class="field-title">
+            <i class="fas fa-search"></i>
+            <strong>特征&#12288;&#12288;</strong>
+          </div>
+          <div class="field-content" id="disease-features">加载中...</div>
+        </div>
+        
+        <div class="field">
+          <div class="field-title">
+            <i class="fas fa-shield-alt"></i>
+            <strong>预防措施</strong>
+          </div>
+          <div class="field-content" id="disease-prevention">加载中...</div>
+        </div>
+        
+        <div class="field">
+          <div class="field-title">
+            <i class="fas fa-stethoscope"></i>
+            <strong>治疗方法</strong>
+          </div>
+          <div class="field-content" id="disease-treatment">加载中...</div>
+        </div>
+        
+        <div class="field">
+          <div class="field-title">
+            <i class="fas fa-heartbeat"></i>
+            <strong>愈后护理</strong>
+          </div>
+          <div class="field-content" id="disease-aftercare">加载中...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button id="prev-btn" class="btn">
+        <i class="fas fa-chevron-left"></i> 上一条
+      </button>
+      <span id="page-info">第 1 条</span>
+      <button id="next-btn" class="btn">
+        下一条 <i class="fas fa-chevron-right"></i>
+      </button>
+      <button id="random-btn" class="btn secondary">
+        <i class="fas fa-random"></i> 随机查看
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let currentPage = 1;
+    let totalPage = 1;
+
+    async function loadDisease(page = 1) {
+      try {
+        const res = await fetch(`/api/skin/page?page=${page}`);
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          const d = data.results[0];
+          document.getElementById('disease-name').innerText = d.name;
+          document.getElementById('disease-image').src = d.image_url || '';
+          document.getElementById('disease-cause').innerText = d.cause;
+          document.getElementById('disease-features').innerText = d.features;
+          document.getElementById('disease-prevention').innerText = d.prevention;
+          document.getElementById('disease-treatment').innerText = d.treatment;
+          document.getElementById('disease-aftercare').innerText = d.aftercare;
+          currentPage = data.page;
+          totalPage = data.total;
+          document.getElementById('page-info').innerText = `第 ${currentPage} 条 / 共 ${totalPage} 条`;
+          document.getElementById('prev-btn').disabled = currentPage <= 1;
+          document.getElementById('next-btn').disabled = currentPage >= totalPage;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadRandomDisease() {
+      try {
+        const res = await fetch('/api/skin/random');
+        const d = await res.json();
+        if (d) {
+          document.getElementById('disease-name').innerText = d.name;
+          document.getElementById('disease-image').src = d.image_url ? `/${d.image_url}` : '';
+          document.getElementById('disease-cause').innerText = d.cause;
+          document.getElementById('disease-features').innerText = d.features;
+          document.getElementById('disease-prevention').innerText = d.prevention;
+          document.getElementById('disease-treatment').innerText = d.treatment;
+          document.getElementById('disease-aftercare').innerText = d.aftercare;
+          document.getElementById('page-info').innerText = `随机显示`;
+          document.getElementById('prev-btn').disabled = false;
+          document.getElementById('next-btn').disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      if (currentPage > 1) loadDisease(currentPage - 1);
+    });
+    document.getElementById('next-btn').addEventListener('click', () => {
+      loadDisease(currentPage + 1);
+    });
+    document.getElementById('random-btn').addEventListener('click', loadRandomDisease);
+
+    // 页面加载时随机显示一条
+    loadRandomDisease();
+  </script>
+</body>
+</html>
